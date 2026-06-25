@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Quiz Hormones & Perte de Poids — Elisa ENERGY</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#080810;font-family:'Inter',-apple-system,sans-serif;min-height:100vh;}
+.wrap{min-height:100vh;background:#080810;display:flex;flex-direction:column;align-items:center;padding:0 18px 80px;overflow:hidden;position:relative;}
+.bg-orb{position:absolute;pointer-events:none;border-radius:50%;}
+.o1{width:500px;height:500px;background:radial-gradient(circle,rgba(255,45,120,0.20) 0%,transparent 65%);top:-200px;left:-150px;}
+.o2{width:400px;height:400px;background:radial-gradient(circle,rgba(180,0,80,0.14) 0%,transparent 65%);top:400px;right:-180px;}
+.o3{width:350px;height:350px;background:radial-gradient(circle,rgba(255,45,120,0.10) 0%,transparent 65%);bottom:200px;left:50px;}
+.header{width:100%;max-width:640px;padding:32px 0 0;position:relative;z-index:2;}
+.brand-row{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.brand-ico{width:32px;height:32px;border-radius:8px;background:#ff2d78;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;box-shadow:0 0 20px #ff2d7880;}
+.brand-name{font-size:11px;font-weight:700;letter-spacing:0.16em;color:#ff2d78;text-transform:uppercase;}
+.prog-top{display:flex;justify-content:space-between;margin-bottom:10px;}
+.prog-step{font-size:11px;font-weight:600;color:#ff2d78;letter-spacing:0.08em;}
+.prog-count{font-size:11px;color:#333;}
+.prog-bg{width:100%;height:2px;background:#161620;border-radius:2px;position:relative;margin-bottom:32px;}
+.prog-fill{height:2px;background:#ff2d78;border-radius:2px;transition:width 0.6s cubic-bezier(.4,0,.2,1);position:relative;}
+.prog-fill::after{content:'';position:absolute;right:-1px;top:-3px;width:8px;height:8px;border-radius:50%;background:#ff2d78;box-shadow:0 0 12px #ff2d78,0 0 24px #ff2d7880;}
+.block{width:100%;max-width:640px;position:relative;z-index:2;}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.q-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(255,45,120,0.08);border:1px solid rgba(255,45,120,0.2);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;color:#ff2d78;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;}
+.edot{width:5px;height:5px;border-radius:50%;background:#ff2d78;animation:pulse 2s infinite;display:inline-block;}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,45,120,0.6)}50%{opacity:0.6;box-shadow:0 0 0 4px transparent}}
+.q-title{font-size:22px;font-weight:800;color:#f5f5f8;line-height:1.25;margin-bottom:8px;letter-spacing:-0.02em;}
+.q-sub{font-size:13px;color:#444;margin-bottom:26px;line-height:1.6;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.grid.col1{grid-template-columns:1fr;}
+.opt{background:#0e0e1a;border:1px solid #1e1e2e;border-radius:13px;padding:15px 17px;cursor:pointer;display:flex;align-items:center;gap:11px;transition:border-color 0.2s,background 0.2s,transform 0.15s;position:relative;overflow:hidden;width:100%;text-align:left;}
+.opt::before{content:'';position:absolute;inset:0;border-radius:13px;background:radial-gradient(ellipse at 50% 0%,rgba(255,45,120,0.13) 0%,transparent 70%);opacity:0;transition:opacity 0.3s;}
+.opt:hover{border-color:#ff2d7855;background:#110818;transform:translateY(-1px);}
+.opt:hover::before,.opt.sel::before{opacity:1;}
+.opt.sel{border-color:#ff2d78;background:#110818;}
+.flash-ring{position:absolute;inset:-1px;border-radius:13px;border:1px solid #ff2d78;opacity:0;pointer-events:none;}
+@keyframes flashRing{0%{opacity:1;box-shadow:0 0 0 0 #ff2d7880,inset 0 0 20px rgba(255,45,120,0.15);}40%{opacity:1;box-shadow:0 0 20px 8px rgba(255,45,120,0.3),inset 0 0 30px rgba(255,45,120,0.2);}100%{opacity:0;box-shadow:0 0 0 0 transparent;}}
+.opt.flashing .flash-ring{animation:flashRing 0.6s ease-out forwards;}
+.opt-ico{font-size:19px;min-width:26px;text-align:center;position:relative;z-index:1;}
+.opt-txt{font-size:13px;color:#aaa;font-weight:500;line-height:1.4;flex:1;position:relative;z-index:1;transition:color 0.2s;}
+.opt.sel .opt-txt{color:#f5f5f8;}
+.chk{width:18px;height:18px;border-radius:50%;border:1.5px solid #252535;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;color:white;transition:all 0.2s;position:relative;z-index:1;}
+.opt.sel .chk{background:#ff2d78;border-color:#ff2d78;box-shadow:0 0 10px #ff2d78aa;}
+.btn-next{margin-top:22px;width:100%;padding:15px;background:#ff2d78;color:white;font-size:14px;font-weight:700;font-family:inherit;border:none;border-radius:11px;cursor:pointer;letter-spacing:0.04em;transition:background 0.2s,transform 0.15s,box-shadow 0.2s;position:relative;overflow:hidden;display:none;box-shadow:0 4px 24px rgba(255,45,120,0.4);}
+.btn-next::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 60%);}
+.btn-next:hover{background:#e0005f;transform:translateY(-2px);}
+.btn-next.show{display:block;}
+.sep{width:100%;max-width:640px;height:1px;background:#111120;margin:22px 0;position:relative;z-index:2;}
+.trust{display:flex;gap:18px;flex-wrap:wrap;position:relative;z-index:2;}
+.ti{font-size:11px;color:#2a2a3a;display:flex;align-items:center;gap:5px;}
+.multi-hint{font-size:11px;color:#333;margin-top:10px;text-align:center;}
+.fblock{width:100%;max-width:640px;position:relative;z-index:2;margin-top:36px;animation:slideUp 0.4s ease;}
+.form-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,45,120,0.08);border:1px solid rgba(255,45,120,0.2);border-radius:20px;padding:5px 12px;font-size:10px;font-weight:700;color:#ff2d78;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:16px;}
+.form-title{font-size:22px;font-weight:800;color:#f5f5f8;line-height:1.3;margin-bottom:8px;letter-spacing:-0.02em;}
+.form-title em{color:#ff2d78;font-style:normal;}
+.form-sub{font-size:13px;color:#555;margin-bottom:22px;line-height:1.65;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px;}
+.f-field{margin-bottom:9px;}
+.f-label{display:block;font-size:10px;font-weight:700;color:#555;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:7px;}
+.f-input{width:100%;padding:13px 15px;background:#0e0e1a;border:1px solid #1e1e2e;border-radius:9px;color:#f5f5f8;font-size:14px;font-family:inherit;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.f-input:focus{border-color:#ff2d78;box-shadow:0 0 0 3px rgba(255,45,120,0.12);}
+.f-input::placeholder{color:#252535;}
+.f-input.invalid{border-color:#ff4444;box-shadow:0 0 0 3px rgba(255,68,68,0.12);}
+.btn-submit{margin-top:18px;width:100%;padding:16px;background:#ff2d78;color:white;font-size:15px;font-weight:800;font-family:inherit;border:none;border-radius:11px;cursor:pointer;box-shadow:0 4px 28px rgba(255,45,120,0.45);transition:all 0.2s;position:relative;overflow:hidden;}
+.btn-submit::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 60%);}
+.btn-submit:hover{background:#e0005f;transform:translateY(-2px);}
+.btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.err-msg{display:none;margin-top:10px;text-align:center;font-size:12px;color:#ff5566;padding:10px;background:rgba(255,68,68,0.08);border-radius:8px;border:1px solid rgba(255,68,68,0.2);}
+.privacy{text-align:center;font-size:11px;color:#252535;margin-top:10px;line-height:1.6;}
+.rblock{width:100%;max-width:640px;position:relative;z-index:2;margin-top:36px;display:none;}
+.res-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,45,120,0.08);border:1px solid rgba(255,45,120,0.2);border-radius:20px;padding:5px 12px;font-size:10px;font-weight:700;color:#ff2d78;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:16px;}
+.res-title{font-size:24px;font-weight:900;color:#f5f5f8;line-height:1.2;margin-bottom:10px;letter-spacing:-0.03em;}
+.res-title em{color:#ff2d78;font-style:normal;}
+.res-intro{font-size:14px;color:#555;line-height:1.7;margin-bottom:22px;}
+.profil-card{background:#0e0e1a;border:1px solid #1e1e2e;border-radius:16px;padding:22px;margin-bottom:14px;position:relative;overflow:hidden;}
+.profil-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#ff2d78,transparent);}
+.profil-head{font-size:10px;font-weight:700;color:#ff2d78;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px;}
+.profil-nom{font-size:19px;font-weight:800;color:#f5f5f8;margin-bottom:8px;letter-spacing:-0.02em;}
+.profil-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.tag{background:rgba(255,45,120,0.08);border:1px solid rgba(255,45,120,0.2);border-radius:20px;padding:4px 10px;font-size:11px;color:#ff2d78;font-weight:600;}
+.profil-desc{font-size:13px;color:#555;line-height:1.65;}
+.axes{display:flex;flex-direction:column;gap:9px;margin-bottom:22px;}
+.axe{background:#0e0e1a;border:1px solid #1e1e2e;border-radius:11px;padding:15px;}
+.axe-top{display:flex;justify-content:space-between;margin-bottom:9px;}
+.axe-nom{font-size:13px;font-weight:600;color:#f5f5f8;}
+.axe-pct{font-size:11px;font-weight:700;color:#ff2d78;}
+.axe-bg{width:100%;height:3px;background:#161620;border-radius:2px;overflow:hidden;margin-bottom:7px;}
+.axe-bar{height:3px;background:#ff2d78;border-radius:2px;width:0%;transition:width 1.2s cubic-bezier(.4,0,.2,1);box-shadow:0 0 8px #ff2d7880;}
+.axe-detail{font-size:12px;color:#444;line-height:1.5;}
+.btn-calendly{width:100%;padding:18px;background:#ff2d78;color:white;font-size:15px;font-weight:800;font-family:inherit;border:none;border-radius:12px;cursor:pointer;margin-bottom:10px;box-shadow:0 4px 28px rgba(255,45,120,0.45);transition:all 0.2s;position:relative;overflow:hidden;letter-spacing:0.02em;}
+.btn-calendly::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 60%);}
+.btn-calendly:hover{background:#e0005f;transform:translateY(-2px);box-shadow:0 8px 40px rgba(255,45,120,0.6);}
+.cta-sub{text-align:center;font-size:11px;color:#252535;margin-bottom:20px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bg-orb o1"></div>
+<div class="bg-orb o2"></div>
+<div class="bg-orb o3"></div>
+<div class="header">
+  <div class="brand-row">
+    <div class="brand-ico">E</div>
+    <div class="brand-name">Elisa · ENERGY</div>
+  </div>
+  <div class="prog-top">
+    <span class="prog-step" id="pstep">Objectif</span>
+    <span class="prog-count" id="pcount">1 / 8</span>
+  </div>
+  <div class="prog-bg"><div class="prog-fill" id="pf" style="width:0%"></div></div>
+</div>
+<div class="block" id="qBlock"></div>
+<div class="fblock" id="fBlock" style="display:none"></div>
+<div class="rblock" id="rBlock"></div>
+</div>
+
+<script>
+const ZAPIER='https://hooks.zapier.com/hooks/catch/27883782/425cmut/';
+const CALENDLY='https://calendly.com/elisabfft13/1h';
+const STEPS=['Objectif','Situation','Cycle','Symptômes','Alimentation','Durée','Accompagnement','Frein'];
+const Qs=[
+  {n:'01',t:'Quel est ton objectif principal ?',s:'Sois précise — ça change tout à l\'analyse.',opts:[{i:'⚖️',t:'Perdre du poids durablement',sc:{oestro:1}},{i:'🌸',t:'Rééquilibrer mes hormones',sc:{oestro:2,cortisol:1}},{i:'🔋',t:'Retrouver de l\'énergie',sc:{cortisol:2,thyroide:1}},{i:'🧘',t:'Réconcilier corps & esprit',sc:{cortisol:1}}]},
+  {n:'02',t:'Laquelle de ces situations te parle ?',s:'Honnêteté totale — c\'est la seule règle.',opts:[{i:'😮‍💨',t:'Je mange bien mais rien ne bouge',sc:{insuline:2,thyroide:1}},{i:'🎢',t:'Poids yo-yo depuis des années',sc:{insuline:1,oestro:1}},{i:'🤯',t:'Tout essayé, zéro résultat durable',sc:{cortisol:1,thyroide:1}},{i:'😶',t:'Mon corps semble résister à tout',sc:{thyroide:2}}]},
+  {n:'03',t:'Comment tu vis ton cycle menstruel ?',s:'Chaque signe est une donnée hormonale brute.',opts:[{i:'✅',t:'Régulier, sans douleur',sc:{}},{i:'😣',t:'Douleurs & crampes intenses',sc:{oestro:2,progeste:1}},{i:'🌊',t:'Irrégulier ou absent',sc:{oestro:1,cortisol:2}},{i:'🌡️',t:'SPM sévère — humeur, gonflement, fatigue',sc:{oestro:2,progeste:2}}]},
+  {n:'04',t:'Quels signaux ton corps t\'envoie ?',s:'Sélectionne tout ce qui s\'applique.',multi:true,opts:[{i:'😴',t:'Fatigue profonde au réveil',sc:{cortisol:2,thyroide:1}},{i:'🧠',t:'Brouillard mental constant',sc:{insuline:1,thyroide:2}},{i:'📈',t:'Graisse abdominale rebelle',sc:{insuline:2,cortisol:1}},{i:'💆',t:'Anxiété & humeur instable',sc:{oestro:1,cortisol:2,progeste:1}},{i:'🍫',t:'Fringales de sucre irrésistibles',sc:{insuline:3}},{i:'❄️',t:'Toujours froid, métabolisme au ralenti',sc:{thyroide:3}}]},
+  {n:'05',t:'Ta relation avec l\'alimentation ?',s:null,opts:[{i:'🥗',t:'Je mange sain — aucun résultat',sc:{thyroide:1,insuline:1}},{i:'🎠',t:'Restriction puis craquages en boucle',sc:{insuline:2,cortisol:1}},{i:'🤷',t:'Perdue dans les infos contradictoires',sc:{cortisol:1}},{i:'😰',t:'Nourriture rime avec culpabilité',sc:{cortisol:2}}]},
+  {n:'06',t:'Depuis combien de temps tu te bats ?',s:null,opts:[{i:'📅',t:'Moins de 6 mois',sc:{}},{i:'🗓️',t:'6 mois à 2 ans',sc:{cortisol:1}},{i:'⏳',t:'Plus de 2 ans',sc:{oestro:1,insuline:1}},{i:'🔁',t:'Toute ma vie — ça revient toujours',sc:{oestro:1,thyroide:1,insuline:1}}]},
+  {n:'07',t:'As-tu déjà été accompagnée ?',s:null,opts:[{i:'🙅',t:'Jamais',sc:{}},{i:'👩‍⚕️',t:'Médecin ou nutritionniste',sc:{}},{i:'💻',t:'Programme ou coaching en ligne',sc:{}},{i:'😞',t:'Oui — sans résultat pour moi',sc:{cortisol:1}}]},
+  {n:'08',t:'Qu\'est-ce qui te retient d\'agir ?',s:'Il n\'y a pas de mauvaise réponse.',opts:[{i:'💸',t:'Le budget',sc:{}},{i:'⏰',t:'Pas assez de temps',sc:{cortisol:1}},{i:'🤔',t:'Je ne sais pas par où commencer',sc:{}},{i:'💪',t:'Rien — je suis prête maintenant',sc:{}}]}
+];
+let cur=0,answers=[],sel=[];
+let sc={oestro:0,progeste:0,cortisol:0,insuline:0,thyroide:0};
+
+function render(){
+  if(cur>=Qs.length){showForm();return;}
+  const q=Qs[cur];
+  document.getElementById('pf').style.width=(cur/Qs.length*100)+'%';
+  document.getElementById('pstep').textContent=STEPS[cur];
+  document.getElementById('pcount').textContent=(cur+1)+' / '+Qs.length;
+  sel=[];
+  const col=q.opts.length>4?'col1':'';
+  const opts=q.opts.map((o,i)=>`
+    <button class="opt" onclick="pick(${i})" id="o${i}">
+      <div class="flash-ring"></div>
+      <span class="opt-ico">${o.i}</span>
+      <span class="opt-txt">${o.t}</span>
+      <span class="chk" id="c${i}"></span>
+    </button>`).join('');
+  const qb=document.getElementById('qBlock');
+  qb.innerHTML=`
+    <div class="q-eyebrow"><span class="edot"></span>Question ${q.n} sur 08</div>
+    <div class="q-title">${q.t}</div>
+    ${q.s?`<div class="q-sub">${q.s}</div>`:'<div style="margin-bottom:26px"></div>'}
+    <div class="grid ${col}">${opts}</div>
+    ${q.multi?'<div class="multi-hint">Sélectionne tout ce qui s\'applique</div>':''}
+    <button class="btn-next" id="bn" onclick="goNext()">${cur===Qs.length-1?'Voir mon diagnostic →':'Continuer →'}</button>
+    <div class="sep"></div>
+    <div class="trust">
+      <div class="ti">🔒 Confidentiel</div>
+      <div class="ti">⚡ Résultat immédiat</div>
+      <div class="ti">🌸 +500 femmes accompagnées</div>
+    </div>`;
+  qb.style.animation='none';void qb.offsetWidth;qb.style.animation='slideUp 0.4s cubic-bezier(.4,0,.2,1)';
+}
+
+function pick(i){
+  const q=Qs[cur];
+  const btn=document.getElementById('o'+i);
+  btn.classList.add('flashing');
+  setTimeout(()=>btn.classList.remove('flashing'),600);
+  if(q.multi){
+    if(sel.includes(i)){sel=sel.filter(x=>x!==i);btn.classList.remove('sel');document.getElementById('c'+i).textContent='';}
+    else{sel.push(i);btn.classList.add('sel');document.getElementById('c'+i).textContent='✓';}
+    sel.length>0?document.getElementById('bn').classList.add('show'):document.getElementById('bn').classList.remove('show');
+  } else {
+    document.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
+    document.querySelectorAll('.chk').forEach(c=>c.textContent='');
+    btn.classList.add('sel');document.getElementById('c'+i).textContent='✓';
+    sel=[i];document.getElementById('bn').classList.add('show');
+    setTimeout(()=>{save();cur++;render();},420);
+  }
+}
+function goNext(){save();cur++;render();}
+function save(){
+  const q=Qs[cur];
+  answers.push({q:cur,s:[...sel],texts:sel.map(i=>q.opts[i].t)});
+  sel.forEach(i=>{const s2=q.opts[i].sc||{};Object.keys(s2).forEach(k=>{sc[k]=(sc[k]||0)+s2[k];});});
+}
+function atxt(qi){return answers[qi]?answers[qi].texts.join(' + '):'—';}
+
+function showForm(){
+  document.getElementById('pf').style.width='100%';
+  document.getElementById('pstep').textContent='Infos';
+  document.getElementById('pcount').textContent='Dernière étape';
+  document.getElementById('qBlock').style.display='none';
+  const fb=document.getElementById('fBlock');
+  fb.style.display='block';
+  fb.innerHTML=`
+    <div class="form-pill"><span class="edot"></span>Analyse prête — plus qu'une étape</div>
+    <div class="form-title">Reçois ton <em>diagnostic hormonal</em> 🌸</div>
+    <div class="form-sub">Renseigne tes coordonnées pour débloquer ton profil et réserver ton appel offert avec Elisa.</div>
+    <div class="f-row">
+      <div class="f-field"><label class="f-label">Prénom</label><input class="f-input" id="fp" type="text" placeholder="Camille"/></div>
+      <div class="f-field"><label class="f-label">Âge</label><input class="f-input" id="fa" type="number" placeholder="32" min="18" max="70"/></div>
+    </div>
+    <div class="f-field"><label class="f-label">Email</label><input class="f-input" id="fe" type="email" placeholder="camille@email.com"/></div>
+    <div class="f-field"><label class="f-label">Téléphone</label><input class="f-input" id="ft" type="tel" placeholder="+33 6 12 34 56 78"/></div>
+    <div class="f-field"><label class="f-label">Instagram (sans @)</label><input class="f-input" id="fi" type="text" placeholder="camille.wellness"/></div>
+    <button class="btn-submit" id="bs" onclick="submitForm()">🌸 Découvrir mon diagnostic →</button>
+    <div class="err-msg" id="err"></div>
+    <p class="privacy">🔒 Données confidentielles · Zéro spam · Jamais revendues</p>`;
+}
+
+function submitForm(){
+  const fields=[
+    {el:document.getElementById('fp'),check:v=>v.length>=2,msg:'Ton prénom est requis'},
+    {el:document.getElementById('fa'),check:v=>v>=18&&v<=70,msg:'Ton âge est requis'},
+    {el:document.getElementById('fe'),check:v=>v.includes('@')&&v.includes('.'),msg:'Email invalide'},
+    {el:document.getElementById('ft'),check:v=>v.length>=8,msg:'Numéro de téléphone requis'},
+    {el:document.getElementById('fi'),check:v=>v.length>=2,msg:'Instagram requis'},
+  ];
+  let valid=true,firstErr='';
+  fields.forEach(f=>{
+    const val=f.el.value.trim();
+    if(!f.check(val)){f.el.classList.add('invalid');if(!firstErr)firstErr=f.msg;valid=false;}
+    else{f.el.classList.remove('invalid');}
+  });
+  if(!valid){
+    const err=document.getElementById('err');
+    err.textContent='⚠️ '+firstErr+' — tous les champs sont obligatoires.';
+    err.style.display='block';return;
+  }
+  const bs=document.getElementById('bs');
+  bs.disabled=true;bs.textContent='Analyse en cours...';
+  const prenom=document.getElementById('fp').value.trim();
+  const age=document.getElementById('fa').value.trim();
+  const email=document.getElementById('fe').value.trim();
+  const tel=document.getElementById('ft').value.trim();
+  const insta=document.getElementById('fi').value.trim();
+  const profil=getProfil();
+  const payload={
+    date:new Date().toLocaleDateString('fr-FR'),
+    heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
+    prenom,age,email,tel,instagram:'@'+insta,
+    profil_hormonal:profil.nom,
+    objectif:atxt(0),situation:atxt(1),cycle:atxt(2),
+    symptomes:atxt(3),alimentation:atxt(4),duree:atxt(5),
+    accompagnement:atxt(6),frein:atxt(7),
+    score_oestrogenes:sc.oestro,score_progesterone:sc.progeste,
+    score_cortisol:sc.cortisol,score_insuline:sc.insuline,score_thyroide:sc.thyroide
+  };
+  fetch(ZAPIER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(()=>showResult(prenom))
+    .catch(()=>showResult(prenom));
+}
+
+function getProfil(){
+  const m=Math.max(sc.oestro,sc.progeste,sc.cortisol,sc.insuline,sc.thyroide);
+  if(sc.insuline===m)return{nom:"Résistance à l'insuline",desc:"Ton corps peine à réguler ta glycémie. C'est la cause n°1 des fringales, de la prise de poids abdominale et de la fatigue. Ce n'est pas une question de volonté — c'est biochimique.",tags:["Fringales de sucre","Ventre rebelle","Fatigue post-repas","Poids bloqué"],axes:[{n:"Insuline & glycémie",p:88,d:"Régulation du sucre défaillante — levier prioritaire"},{n:"Alimentation hormonale",p:75,d:"Certains aliments sains font exploser ta glycémie"},{n:"Timing & mouvement",p:62,d:"Quand tu bouges compte autant que ce que tu fais"}]};
+  if(sc.oestro===m)return{nom:"Dominance en œstrogènes",desc:"Tes œstrogènes écrasent ta progestérone. Résultat : rétention d'eau, SPM violent, humeur instable et graisse tenace sur les hanches.",tags:["SPM intense","Rétention d'eau","Humeur instable","Hanches & cuisses"],axes:[{n:"Balance œstro / progestérone",p:85,d:"Dominance identifiée — rééquilibrage prioritaire"},{n:"Détox hormonale (foie)",p:70,d:"Ton foie n'élimine pas assez l'excès d'œstrogènes"},{n:"Phase lutéale & progestérone",p:65,d:"Soutenir cette phase change tout à ton cycle"}]};
+  if(sc.cortisol===m)return{nom:"Axe stress & cortisol",desc:"Ton cortisol chroniquement élevé sabote tout. Il bloque la perte de graisses, détruit ton sommeil et crée des envies de sucre en soirée.",tags:["Stress chronique","Sommeil perturbé","Graisse abdominale","Énergie instable"],axes:[{n:"Cortisol & surrénales",p:86,d:"Activation chronique — impact direct sur ton poids"},{n:"Rythme circadien",p:72,d:"Ton corps ne distingue plus activité et récupération"},{n:"Système nerveux autonome",p:66,d:"Le réguler est la clé pour sortir du cycle stress-poids"}]};
+  if(sc.thyroide===m)return{nom:"Thyroïde sous-optimale",desc:"Ton métabolisme tourne au ralenti. La thyroïde pilote tout : température, énergie, poids, humeur. Même avec des bilans normaux, une thyroïde sous-optimale peut tout bloquer.",tags:["Toujours froid","Métabolisme lent","Fatigue profonde","Poids immobile"],axes:[{n:"Thyroïde & métabolisme",p:84,d:"Fonctionnement sous-optimal identifié"},{n:"Micronutriments clés",p:78,d:"Iode, sélénium, zinc — souvent épuisés"},{n:"Alimentation anti-inflammatoire",p:64,d:"Certains aliments freinent ta thyroïde silencieusement"}]};
+  return{nom:"Profil hormonal mixte",desc:"Plusieurs hormones sont déséquilibrées et s'alimentent mutuellement. C'est le profil le plus complexe — et celui qui nécessite l'approche la plus globale.",tags:["Déséquilibre multiple","Approche globale","Cycle-syncing"],axes:[{n:"Équilibre hormonal global",p:74,d:"Plusieurs leviers à actionner en parallèle"},{n:"Alimentation hormonale",p:68,d:"L'alimentation est le levier n°1 dans ton cas"},{n:"Mode de vie & cycle",p:62,d:"Vivre en accord avec ton cycle change tout"}]};
+}
+
+function showResult(prenom){
+  document.getElementById('fBlock').style.display='none';
+  const rb=document.getElementById('rBlock');
+  rb.style.display='block';
+  const p=getProfil();
+  const axH=p.axes.map(a=>`
+    <div class="axe">
+      <div class="axe-top"><span class="axe-nom">${a.n}</span><span class="axe-pct">${a.p}%</span></div>
+      <div class="axe-bg"><div class="axe-bar" data-p="${a.p}"></div></div>
+      <div class="axe-detail">${a.d}</div>
+    </div>`).join('');
+  const tH=p.tags.map(t=>`<span class="tag">${t}</span>`).join('');
+  rb.innerHTML=`
+    <div class="res-pill"><span class="edot"></span>Diagnostic personnalisé</div>
+    <div class="res-title"><em>${prenom}</em>, voici ce qui bloque ton corps 👇</div>
+    <div class="res-intro">D'après tes 8 réponses, ton profil hormonal dominant est identifié. Ce n'est pas une question de volonté — c'est de la biologie.</div>
+    <div class="profil-card">
+      <div class="profil-head">Profil hormonal dominant</div>
+      <div class="profil-nom">🧬 ${p.nom}</div>
+      <div class="profil-tags">${tH}</div>
+      <div class="profil-desc">${p.desc}</div>
+    </div>
+    <div class="axes">${axH}</div>
+    <button class="btn-calendly" onclick="window.location.href='${CALENDLY}'">
+      🌸 Réserve mon appel offert avec Elisa →
+    </button>
+    <div class="cta-sub">Gratuit · 30 minutes · Sans engagement · En visio</div>
+    <div class="sep"></div>
+    <div class="trust" style="justify-content:center">
+      <div class="ti">✅ Coaching 1-1</div>
+      <div class="ti">🌸 Méthode cycle-syncing</div>
+      <div class="ti">🔬 Science hormonale</div>
+    </div>`;
+  setTimeout(()=>{document.querySelectorAll('.axe-bar').forEach(b=>{b.style.width=b.dataset.p+'%';});},200);
+  rb.style.animation='none';void rb.offsetWidth;rb.style.animation='slideUp 0.5s cubic-bezier(.4,0,.2,1)';
+}
+render();
+</script>
+</body>
+</html>
